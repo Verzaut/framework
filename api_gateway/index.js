@@ -228,3 +228,4 @@ app.listen(PORT, () => {
     ordersCircuit.on('close', () => logger.info('Orders circuit breaker closed'));
     ordersCircuit.on('halfOpen', () => logger.info('Orders circuit breaker half-open'));
 });
+// end
