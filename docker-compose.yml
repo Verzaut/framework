@@ -4,23 +4,42 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - NODE_ENV=production
+      NODE_ENV: ${NODE_ENV:-production}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      JWT_SECRET: ${JWT_SECRET:-dev-secret-change-me}
+      CORS_ORIGIN: ${CORS_ORIGIN:-*}
+      RATE_LIMIT_WINDOW_MS: ${RATE_LIMIT_WINDOW_MS:-60000}
+      RATE_LIMIT_MAX: ${RATE_LIMIT_MAX:-100}
+      USERS_SERVICE_URL: http://service_users:8000
+      ORDERS_SERVICE_URL: http://service_orders:8000
+    depends_on:
+      - service_users
+      - service_orders
     networks:
       - app-network
+    profiles: ["dev","test","prod"]
 
   service_users:
     build: service_users
     environment:
-      - NODE_ENV=production
+      NODE_ENV: ${NODE_ENV:-production}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      JWT_SECRET: ${JWT_SECRET:-dev-secret-change-me}
+      CORS_ORIGIN: ${CORS_ORIGIN:-*}
     networks:
       - app-network
+    profiles: ["dev","test","prod"]
 
   service_orders:
     build: service_orders
     environment:
-      - NODE_ENV=production
+      NODE_ENV: ${NODE_ENV:-production}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      JWT_SECRET: ${JWT_SECRET:-dev-secret-change-me}
+      CORS_ORIGIN: ${CORS_ORIGIN:-*}
     networks:
       - app-network
+    profiles: ["dev","test","prod"]
 
 networks:
   app-network:
